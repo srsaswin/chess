@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const { Game } = require('./Game');
+const { GameManager } = require('./GameManager');
 const { PORT } = require('./constants');
 const server = new WebSocket.Server({port:PORT});
 
@@ -20,12 +20,12 @@ server.on('connection',(player)=>{
     if(players.isMatchable()){
         console.log('Match Found! Starting Game...');
         
-        const game = new Game(
+        const gm = new GameManager(
             players.queue.pop(),
             players.queue.pop()
         );
 
-        game.delet = function () { 
+        gm.delet = function () { 
                 games.queue = games.queue.filter(g => g !== this);
                 
 
@@ -35,7 +35,7 @@ server.on('connection',(player)=>{
                 console.log('Game deleted');
         };
 
-        games.queue.push(game);
+        games.queue.push(gm);
     }
 
 });
